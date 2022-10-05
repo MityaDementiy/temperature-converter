@@ -1,13 +1,18 @@
-(ns ^:figwheel-hooks learn-cljs.temp-converter
-  (:require
-   [goog.dom :as gdom]))
+(ns learn-cljs.temp-converter
+  (:require [goog.dom :as gdom]
+            [goog.events :as gevents]))
 
-(println "This text is printed from src/learn_cljs/temp_converter.cljs. Go ahead and edit it and see reloading in action.")
+(defn f->c [deg-f] 
+  (/ (- deg-f 32) 1.8))
 
-(defn multiply [a b] (* a b))
+(defn c->f [deg-c] 
+  (+ (* deg-c 1.8) 32))
 
-;; define your app data so that it doesn't get over-written on reload
-(defonce app-state (atom {:text "Hello world!"}))
+(def celsius-radio (gdom/getElement "unit-c"))
+(def fahrenheit-radio (gdom/getElement "unit-f"))
+(def temp-input (gdom/getElement "temp"))
+(def output-target (gdom/getElement "temp-out"))
+(def output-unit-target (gdom/getElement "unit-out"))
 
 (defn get-app-element []
   (gdom/getElement "app"))
