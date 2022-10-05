@@ -16,8 +16,8 @@
 
 (defn get-input-unit [] 
   (if (.-checked celsius-radio)
-  :celsius
-  :fahrenheit))
+    :celsius
+    :fahrenheit))
 
 (defn get-input-temp []
   (js/parseInt (.-value temp-input)))
