@@ -14,6 +14,17 @@
 (def output-target (gdom/getElement "temp-out"))
 (def output-unit-target (gdom/getElement "unit-out"))
 
+(defn get-input-unit [] 
+  (if (.-checked celsius-radio)
+  :celsius
+  :fahrenheit))
+
+(defn get-input-temp []
+  (js/parseInt (.-value temp-input)))
+
+(defn set-output-temp [temp] 
+  (gdom/setTextContent output-target (.toFixed temp 2)))
+
 (defn get-app-element []
   (gdom/getElement "app"))
 
