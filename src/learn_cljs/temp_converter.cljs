@@ -28,7 +28,16 @@
 (defn get-app-element []
   (gdom/getElement "app"))
 
+(defn update-output [_]
+  (if (= :celsius (get-input-unit))
+    (do (set-output-temp (c->f (get-input-temp)))
+        (gdom/setTextContent output-unit-target "F"))
+    (do (set-output-temp (f->c (get-input-temp)))
+        (gdom/setTextContent output-unit-target "C"))))
 
+(gevents/listen temp-input "keyup" update-output)
+(gevents/listen celsius-radio "click" update-output)
+(gevents/listen fahrenheit-radio "click" update-output)
 
 ;; specify reload hook with ^:after-load metadata
 (defn ^:after-load on-reload []
