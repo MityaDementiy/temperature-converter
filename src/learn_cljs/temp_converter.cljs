@@ -30,22 +30,25 @@
   (set! (.-value temp-input) "")
   (gdom/setTextContent output-target "-"))
 
+(defn target-label-for-output-unit [unit]
+  (case unit
+    :fahrenheit "C"
+    :celsius "F"))
+
+(defn convert [unit temp]
+  (if (= unit :celsius)
+    (c->f temp)
+    (f->c temp)))
 
 (defn update-output [_]
-  (if (= :celsius (get-input-unit))
-    (do (set-output-temp (c->f (get-input-temp)))
-        (gdom/setTextContent output-unit-target "F"))
-    (do (set-output-temp (f->c (get-input-temp)))
-        (gdom/setTextContent output-unit-target "C"))))
+  (let [unit (get-input-unit)
+        input-temp (get-input-temp)
+        output-temp (convert unit input-temp)
+        output-label (target-label-for-output-unit unit)]
+    (set-output-temp output-temp)
+    (gdom/setTextContent output-unit-target output-label)))
 
 (gevents/listen temp-input "keyup" update-output)
 (gevents/listen celsius-radio "click" update-output)
 (gevents/listen fahrenheit-radio "click" update-output)
 (gevents/listen clear-button "click" clear-input)
-
-;; specify reload hook with ^:after-load metadata
-(defn ^:after-load on-reload []
-  ;; optionally touch your app-state to force rerendering depending on
-  ;; your application
-  ;; (swap! app-state update-in [:__figwheel_counter] inc)
-  )
